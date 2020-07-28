@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.tts.TransitApp.model.Bus;
 import com.tts.TransitApp.model.BusRequest;
 import com.tts.TransitApp.service.TransitService;
+import com.tts.TransitApp.model.*;
 
 @Controller
 public class TransitController {
@@ -21,9 +22,15 @@ public class TransitController {
 	}
 	@PostMapping("/buses")
 	public String getNearbyBuses(BusRequest request, Model model) {
+		Location userLocation = apiService.getCoordinates(request.address + " " + request.city);
+		model.addAttribute("location", userLocation);
 		List<Bus> buses = apiService.getNearbyBuses(request);
 		model.addAttribute("buses", buses);
 		model.addAttribute("request", request);
+		
 		return "index";
+		
+		
 	}
+	
 }

@@ -27,8 +27,8 @@
                     <br/>
                 </div>
             </div>
-            <div class="row" th:if="${buses != null && buses.size() > 0}">
-                <table class="table table-striped">
+            <div class="row left" th:if="${buses != null && buses.size() > 0}">
+                <table class="col table table-striped">
                     <tr>
                         <th>Route #</th>
                         <th>Bus #</th>
@@ -44,15 +44,20 @@
                 </table>
             </div>
             <div class="text-center" th:if="${buses != null && buses.size() == 0}">
-                <h3>Sorry, there are no nearby buses.</h3>
+                <h3>Sorry, there are no nearby buses, or you have inputed a wrong address</h3>
             </div>
         </div>
-        <div id="map"></div>
+        <div class="justify-content-end" id="map"></div>
 		<div th:if="${buses != null and buses.size() > 0}">
 		    <script th:inline="javascript">
 		    /*<![CDATA[*/			
 		    var busLocations = /*[[${buses}]]*/
+		    var coords = {
+	                lat: parseFloat(/*[[${location.lat}]]*/),
+	                lng: parseFloat(/*[[${location.lng}]]*/)
+	         };
 		    /*]]>*/
+		    
 		    </script>
 		    <script th:inline="javascript" src="/custom.js"></script>
 		    <script th:src="@{${'https://maps.googleapis.com/maps/api/js?key='+@environment.getProperty('google_api_key')+'&callback=initMap'}}" async defer></script>

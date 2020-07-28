@@ -29,12 +29,20 @@ public class TransitService {
         Bus[] buses = restTemplate.getForObject(transitUrl, Bus[].class);
         return Arrays.asList(buses);
     }
-    private Location getCoordinates(String description) {
-        description = description.replace(" ", "+");
-        String url = geocodingUrl + description + "GA&key=" + googleApiKey;
+    public Location getCoordinates(String description) {
+       
+    	description = description.replace(" ", "+");
+        try {
+    	String url = geocodingUrl + description + "GA&key=" + googleApiKey;
         RestTemplate restTemplate = new RestTemplate();
         GeocodingResponse response = restTemplate.getForObject(url, GeocodingResponse.class);
         return response.results.get(0).geometry.location;
+        }catch(IndexOutOfBoundsException e) {
+        	String url = geocodingUrl + "NY&key=" + googleApiKey;
+            RestTemplate restTemplate = new RestTemplate();
+            GeocodingResponse response = restTemplate.getForObject(url, GeocodingResponse.class);
+        	return response.results.get(0).geometry.location;
+        }
     }
     private double getDistance(Location origin, Location destination) {
         String url = distanceUrl + "origins=" + origin.lat + "," + origin.lng + "&destinations=" + destination.lat + "," + destination.lng + "&key=" + googleApiKey;

@@ -4,6 +4,7 @@ public class BusRequest {
 
 	public String address;
 	public String city;
+	
 	public String getAddress() {
 		return address;
 	}
